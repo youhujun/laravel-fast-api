@@ -1,0 +1,22 @@
+<?php
+
+namespace {{ namespace }};
+
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+
+class {{ class }} extends Seeder
+{
+    /**
+     * Run the database seeds.
+     */
+    public function run(): void
+    {
+        $replaceData = [
+			['created_time'=>time(),'created_at'=>date('Y-m-d H:i:s',time()),'sort'=>100],
+		];
+
+		DB::table('replace_table')->insert($replaceData);
+    }
+}

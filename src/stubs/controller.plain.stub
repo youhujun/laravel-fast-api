@@ -1,0 +1,83 @@
+<?php
+
+namespace {{ namespace }};
+
+use {{ rootNamespace }}Http\Controllers\Controller;
+use Illuminate\Http\Request;
+
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
+
+use App\Rules\Public\Required;
+use App\Rules\Public\Numeric;
+use App\Rules\Public\CheckString;
+use App\Rules\Public\CheckBetween;
+use App\Rules\Public\CheckArray;
+use App\Rules\Public\FormatTime;
+use App\Rules\Public\CheckUnique;
+use App\Rules\Public\ChineseCodeNumberLine;
+
+use App\Facade\ReplaceFacade;
+
+class {{ class }} extends Controller
+{
+	 /**
+     * 后台替换
+     */
+    public function AdminReplace(Request $request)
+    {
+        $result = code(\config('admin_code.AdminAuthError'));
+
+        $admin = Auth::guard('phone_token')->user();
+
+        if(Gate::forUser($admin)->allows('admin-role'))
+        {
+            $validator = Validator::make(
+                $request->all(),
+                [
+                    'type'=>['bail','nullable',new Numeric]
+                ],
+                []
+            );
+
+            $validated = $validator->validated();
+
+            $result =  ReplaceFacade::defaultReplace(f($validated),$admin);
+        }
+
+        return $result;
+    }
+
+    /**
+     * 手机替换
+     *
+     * @param Request $request
+     * @return void
+     */
+    public function PhoneReplace(Request $request)
+    {
+        $result = code(\config('phone_code.PhoneAuthError'));
+
+        $user = Auth::guard('phone_token')->user();
+
+        if(Gate::forUser($user)->allows('phone-user-role'))
+        {
+            $validator = Validator::make(
+                $request->all(),
+                [
+                    'find'=>['bail',new Required],
+                    'type'=>['bail','nullable',new Numeric]
+                ],
+                []
+            );
+
+            $validated = $validator->validated();
+
+            $result = ReplaceFacade::PhoneReplace(f($validated),$user);
+        }
+
+        return $result;
+    }
+}

@@ -1,0 +1,81 @@
+<?php
+
+namespace {{ namespace }};
+
+use Illuminate\Http\Resources\Json\JsonResource;
+
+class {{ class }} extends JsonResource
+{
+    /**
+     * 指示是否应保留资源的集合原始键。
+     *
+     * @var bool
+     */
+    public $preserveKeys = true;
+
+    public static $replaceType;
+
+    public static function setReplaceType($replaceType = 10)
+    {
+        self::$replaceType = $replaceType;
+    }
+
+    /**
+     * Transform the resource into an array.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
+     */
+    public function toArray($request)
+    {
+        // return parent::toArray($request);
+
+       $response = [];
+
+        if(\is_array($this->resource))
+        {
+             $response = [
+                'id'=>$this->resource['id'],
+                'is_show'=>$this->resource['is_show'],
+                'type'=>$this->resource['type'],
+                'config_name'=>$this->resource['config_name'],
+            ];
+
+            if(isset($this->resource['children']) && count($this->resource['children']))
+            {
+                //p($this->resource['children']);
+                $response['children'] = $this->collection($this->resource['children']);
+            }
+        }
+
+        if(\is_object($this->resource))
+        {
+            $response = [
+                'id'=>$this->resource->id,
+                'is_show'=>$this->resource->is_show,
+                'type'=>$this->resource->type,
+                'config_name'=>$this->resource->config_name,
+            ];
+
+            if($this->resource->relationLoaded('unionResource'))
+            {
+                if(!is_null($this->rescource))
+                {
+                    $response['union_rescource'] = new ReplaceUnionResource($this->rescource);
+                }
+            }
+
+            if($this->resource->relationLoaded('unionCollection'))
+            {
+                if(!is_null($this->collection))
+                {
+                    $response['union_collection'] = ReplaceUnionResource::collection($this->collection);
+                }
+            }
+        }
+
+        return $response;
+    }
+
+
+}

@@ -1,0 +1,64 @@
+{
+    "name": "youhujun/laravel-fast-api",
+    "description": "Laravel based on the development of API and vue basic functional projects, can be used for rapid development of the system",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "youhujun",
+            "email": "2900976495@qq.com"
+        }
+    ],
+    "keywords": [
+        "laravel",
+        "http",
+        "server",
+        "api"
+    ],
+    "require": {
+        "php": "^8.0.2",
+		"youhujun/plunar": "*",
+		"predis/predis": "*",
+		"intervention/image": "*",
+		"phpoffice/phpspreadsheet":"*",
+        "gregwar/captcha": "*",
+		"endroid/qr-code": "*",
+        "tencentcloud/tencentcloud-sdk-php": "*",
+        "qiniu/php-sdk":"*",
+		"wechatpay/wechatpay": "*",
+        "wechatpay/wechatpay-guzzle-middleware": "*"
+    },
+     "require-dev": {
+        "barryvdh/laravel-ide-helper": "*"
+    },
+    "autoload": {
+        "files": [
+            "src/config/helper.php"
+        ],
+        "psr-4": {
+            "YouHuJun\\LaravelFastApi\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "\\YouHuJun\\LaravelFastApi\\App\\Providers\\LaravelFastApiServiceProvider",
+                "\\YouHuJun\\LaravelFastApi\\App\\Providers\\RouteServiceProvider",
+                "\\YouHuJun\\LaravelFastApi\\App\\Providers\\PublishServiceProvider",
+                "\\YouHuJun\\LaravelFastApi\\App\\Providers\\FacadeServiceProvider",
+                "\\YouHuJun\\LaravelFastApi\\App\\Providers\\EventServiceProvider",
+                "\\YouHuJun\\LaravelFastApi\\App\\Providers\\AuthServiceProvider",
+                "\\YouHuJun\\LaravelFastApi\\App\\Providers\\PolicyServiceProvider",
+                "\\YouHuJun\\LaravelFastApi\\App\\Providers\\SafeAuthServiceProvider"
+            ],
+            "aliases": {
+                "Lredis": "Illuminate\\Support\\Facades\\Redis",
+                "Image": "Intervention\\Image\\Facades\\Image"
+            }
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "easywechat-composer/easywechat-composer": true
+        }
+    }
+}

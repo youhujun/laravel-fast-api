@@ -1,0 +1,65 @@
+<?php
+
+namespace {{ namespace }};
+
+use Illuminate\Contracts\Validation\{{ ruleType }};
+
+use Illuminate\Support\Facades\Log;
+
+use App\Exceptions\Common\RuleException;
+
+class {{ class }} implements {{ ruleType }}
+{
+    protected $message;
+
+
+    public function __construct()
+    {
+        //
+    }
+
+    /**
+     * Determine if the validation rule passes.
+     *
+     * @param  string  $attribute
+     * @param  mixed  $value
+     * @return bool
+     */
+    public function passes($attribute, $value)
+    {
+        $result = true;
+
+        if(isset($value) && !empty($value))
+        {
+            $replacePartten = '';
+
+            $replaceResult = preg_match($ReplacePartten, $value);
+
+            if(!$replaceResult)
+            {
+                $result = false;
+
+            }
+
+        }
+
+        if(!$result)
+        {
+            $this->message = 'replaceMessage';
+            throw new RuleException('RuleReplaceError');
+        }
+
+        return $result;
+    }
+
+    /**
+     * Get the validation error message.
+     *
+     * @return string
+     */
+    public function message()
+    {
+        //return 'The validation error message.';
+        return  $this->message;
+    }
+}
