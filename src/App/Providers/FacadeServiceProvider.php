@@ -5,7 +5,7 @@
  * @Author: YouHuJun
  * @Date: 2021-05-30 23:14:35
  * @LastEditors: youhujun 2900976495@qq.com
- * @LastEditTime: 2024-07-17 03:13:48
+ * @LastEditTime: 2024-07-29 15:58:38
  */
 
 namespace YouHuJun\LaravelFastApi\App\Providers;
@@ -55,6 +55,9 @@ class FacadeServiceProvider extends ServiceProvider
 	{
 		//公共统计
 		$this->app->singleton('TotalAllDataFacade',\App\Service\Facade\Common\Total\TotalAllDataFacadeService::class);
+
+		//用户之间计算距离
+		$this->app->singleton('CalculateUserDistanceFacade',\App\Service\Facade\Common\Location\CalculateUserDistanceFacadeService::class);
 	}
 	/**
 	 * 公共的门面 第三方跟业务无关
