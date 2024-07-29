@@ -26,7 +26,7 @@ Route::prefix(config('custom.version'))->namespace($namespace)->middleware('phon
         Route::namespace('System')->group(function()
         {
             /**
-             * 支付订单控制器
+             * 
              * @see \App\Http\Controllers\Phone\System\MapController
              */
             Route::controller(MapController::class)->group(function()

@@ -5,7 +5,7 @@
  * @Author: YouHuJun
  * @Date: 2021-05-30 23:14:35
  * @LastEditors: youhujun 2900976495@qq.com
- * @LastEditTime: 2024-07-16 10:34:25
+ * @LastEditTime: 2024-07-29 14:53:01
  */
 
 namespace YouHuJun\LaravelFastApi\App\Providers;
@@ -336,6 +336,15 @@ class EventServiceProvider extends ServiceProvider
 			],
 		];
 
+		//用户位置
+		$publishPhoneUserLocationListener = [
+			//用户位置记录
+			\App\Events\Phone\User\Location\UserLocationLogEvent::class =>[
+				//添加用户位置记录
+				\App\Listeners\Phone\User\Location\UserLocationLogEvent\AddUserLocationLogListener::class
+			]
+		];
+
 		//系统事件
 		$publishPhoneSystemListener = [
 			\App\Events\Phone\CommonEvent::class =>[
@@ -343,6 +352,6 @@ class EventServiceProvider extends ServiceProvider
 			],
 		];
 
-		$this->publishPhoneListener = array_merge($publishPhoneUserListener,$publishLoginListener,$publishPhoneSystemListener);
+		$this->publishPhoneListener = array_merge($publishPhoneUserListener,$publishLoginListener,$publishPhoneUserLocationListener,$publishPhoneSystemListener);
 	}
 }

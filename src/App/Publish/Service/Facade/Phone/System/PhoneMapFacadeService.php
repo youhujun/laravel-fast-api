@@ -5,7 +5,7 @@
  * @Author: youhujun 2900976495@qq.com
  * @Date: 2024-07-14 16:16:37
  * @LastEditors: youhujun 2900976495@qq.com
- * @LastEditTime: 2024-07-14 16:24:16
+ * @LastEditTime: 2024-07-29 15:00:07
  * @FilePath: \app\Service\Facade\Phone\System\PhoneMapFacadeService.php
  */
 
@@ -20,6 +20,8 @@ use Illuminate\Support\Facades\Log;
 
 use App\Exceptions\Phone\CommonException;
 use App\Events\Phone\CommonEvent;
+
+use App\Events\Phone\User\Location\UserLocationLogEvent;
 
 use App\Facade\Public\Map\TencentMapFacade;
 
@@ -216,6 +218,7 @@ class PhoneMapFacadeService
          */
 
         //事件处理
+		UserLocationLogEvent::dispatch($user,$validated,$dataResult->address);
 
         $result = code(['code'=> 0,'msg'=>'腾讯地图获取成功!'],['data'=>$dataResult]);
 

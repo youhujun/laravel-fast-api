@@ -1,13 +1,14 @@
 <?php
 /*
- * @Descripttion:
+ * @Descripttion: 
  * @version: v1
  * @Author: youhujun 2900976495@qq.com
- * @Date: 2023-08-16 13:35:46
+ * @Date: 2024-07-25 09:47:00
  * @LastEditors: youhujun 2900976495@qq.com
- * @LastEditTime: 2024-07-14 15:37:08
+ * @LastEditTime: 2024-07-26 09:56:36
  * @FilePath: \database\seeders\System\SystemConfig\SystemConfigSeeder.php
  */
+
 
 namespace Database\Seeders\System\SystemConfig;
 
@@ -74,7 +75,7 @@ class SystemConfigSeeder extends Seeder
             //腾讯地图
             ['item_type'=>20,'item_label'=>'tencent.map.key','item_value'=>'','item_price'=>0,'item_path'=>'','item_introduction'=>'腾讯地图key','created_time'=>time(),'created_at'=>date('Y-m-d H:i:s',time()),'sort'=>100],
 
-            ['item_type'=>20,'item_label'=>'tencent.map.regionUrl','item_value'=>'https://apis.map.qq.com/ws/geocoder/v1/','item_price'=>0,'item_path'=>'','item_introduction'=>'逆地址解析接口','created_time'=>time(),'created_at'=>date('Y-m-d H:i:s',time()),'sort'=>100],
+            ['item_type'=>20,'item_label'=>'tencent.map.api.regionUrl','item_value'=>'https://apis.map.qq.com/ws/geocoder/v1/','item_price'=>0,'item_path'=>'','item_introduction'=>'逆地址解析接口','created_time'=>time(),'created_at'=>date('Y-m-d H:i:s',time()),'sort'=>100],
 
             //二维码
             ['item_type'=>20,'item_label'=>'qrcode.redirectUrl','item_value'=>'','item_price'=>0,'item_path'=>'','item_introduction'=>'二维码跳转链接','created_time'=>time(),'created_at'=>date('Y-m-d H:i:s',time()),'sort'=>100],
