@@ -5,7 +5,7 @@
  * @Author: youhujun 2900976495@qq.com
  * @Date: 2024-06-27 10:32:47
  * @LastEditors: youhujun 2900976495@qq.com
- * @LastEditTime: 2024-07-10 09:30:16
+ * @LastEditTime: 2024-08-01 12:27:15
  * @FilePath: \app\Http\Controllers\Phone\Login\LoginController.php
  */
 
@@ -29,6 +29,7 @@ use App\Rules\Public\CheckUnique;
 use App\Rules\Public\ChineseCodeNumberLine;
 
 use App\Rules\Phone\LoginPhone;
+use App\Rules\Phone\Phone;
 
 use App\Facade\Phone\Login\PhoneLoginFacade;
 use App\Facade\Public\Wechat\WechatOfficialFacade;
@@ -119,6 +120,59 @@ class LoginController extends Controller
         return $result;
 
     }
+
+	 /**
+     * 发送手机验证码 忘记密码
+     *
+     * @param Request $request
+     * @return void
+     */
+    public function sendPasswordCode(Request $request)
+    {
+		
+        $result = code(config('phone_code.SendPhoneCodeError'));
+
+        $validator = Validator::make(
+            $request->all(),
+            [
+               'phone'=>['bail',new Required,new CheckString,new LoginPhone],
+            ],
+            [ ]
+        );
+
+        $validated = $validator->validated();
+
+        $result = PhoneLoginFacade::sendVerifyCode($validated);
+
+        return $result;
+    }
+
+	/**
+	 * 重置手机密码
+	 *
+	 * @param  Request $request
+	 */
+	public function restPasswordByPhone(Request $request)
+	{
+		 $result = code(\config('phone_code.RestPasswordByPhoneError'));
+
+		 $validator = Validator::make(
+            $request->all(),
+            [
+                'phone'=>['bail',new Required,new CheckString,new LoginPhone],
+                'code'=>['bail',new Required,new CheckString,'regex:/^\d{4}$/'],
+				'password'=>['bail',new Required,new CheckString,new CheckBetween(6,12)],
+            ],
+            [ ]
+        );
+		 $validated = $validator->validated();
+
+		$result = PhoneLoginFacade::restPasswordByPhone($validated);
+
+        return $result;
+
+
+	}
 
 
     /**
@@ -285,6 +339,60 @@ class LoginController extends Controller
 
         return $result;
     }
+
+	 /**
+     * 发送手机验证码
+     *
+     * @param Request $request
+     * @return void
+     */
+    public function sendBindCode(Request $request)
+    {
+        $result = code(config('phone_code.SendPhoneCodeError'));
+
+        $validator = Validator::make(
+            $request->all(),
+            [
+               'phone'=>['bail',new Required,new CheckString,new Phone],
+            ],
+            [ ]
+        );
+
+        $validated = $validator->validated();
+
+        $result = PhoneLoginFacade::sendVerifyCode($validated);
+
+        return $result;
+    }
+
+	/**
+	 * 微信登录绑定手机号
+	 *
+	 * @param  Request $request
+	 */
+	public function bindPhone(Request $request)
+	{
+		$user = Auth::guard('phone_token')->user();
+
+		$result = code(\config('phone_code.PhoneAuthError'));
+
+		if(Gate::forUser($user)->allows('phone-user-role'))
+        {
+            $validated = $request->validate(
+            [
+				'phone'=>['bail',new Required,new CheckString,new CheckUnique('users','phone')],
+                'code'=>['bail',new Required,new CheckString,'regex:/^\d{4}$/'],
+                'password'=>['bail',new Required,new CheckString,new CheckBetween(6,12)],
+            ],
+            []);
+
+            //p($validated);die;
+
+            $result = PhoneLoginFacade::bindPhone(f($validated),$user);
+        }
+
+		return $result;
+	}
 
 
     /**

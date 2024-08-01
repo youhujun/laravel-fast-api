@@ -5,7 +5,7 @@
  * @Author: youhujun 2900976495@qq.com
  * @Date: 2024-06-27 10:52:52
  * @LastEditors: youhujun 2900976495@qq.com
- * @LastEditTime: 2024-07-10 09:29:32
+ * @LastEditTime: 2024-08-01 10:48:42
  * @FilePath: \config\custom\phone\code\phone_login_code.php
  */
 
@@ -78,6 +78,13 @@ return [
 
     //用户id登录
     'LoginByUserIdError'=>['code'=>10000,'msg'=>'通过用户id登录失败!','error'=>'LoginByUserIdError'],
+
+	//微信登录绑定手机号
+    'UserBindPhoneError'=>['code'=>10000,'msg'=>'用户绑定手机号失败!','error'=>'UserBindPhoneError'],
+
+	//重置手机密码
+    'RestPasswordByPhoneError'=>['code'=>10000,'msg'=>'重置手机密码失败!','error'=>'RestPasswordByPhoneError'],
+    'RestPasswordPoneIsNullError'=>['code'=>10000,'msg'=>'手机号不存在!','error'=>'RestPasswordPoneIsNullError'],
 
     //退出
     'LogoutError'=>['code'=>10000,'msg'=>'用户退出失败!','error'=>'LogoutError'],

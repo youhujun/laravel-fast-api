@@ -5,7 +5,7 @@
  * @Author: youhujun 2900976495@qq.com
  * @Date: 2024-07-07 19:20:24
  * @LastEditors: youhujun 2900976495@qq.com
- * @LastEditTime: 2024-07-12 13:49:15
+ * @LastEditTime: 2024-08-01 11:19:27
  * @FilePath: \config\custom\public\code\common_wechat_code.php
  */
 
@@ -33,5 +33,10 @@ return [
 
     //微信支付解密
     'WechatApiV3KKeyNotExistsError'=>['code'=>10000,'msg'=>'微信支付的ApiV3Key不存在!','error'=>'WechatApiV3KKeyNotExistsError'],
+
+	//微信查找用户不存在
+    'WechatOfficialFindUserError'=>['code'=>10000,'msg'=>'微信查找用户不存在!','error'=>'WechatOfficialFindUserError'],
+
+	
 
 ];

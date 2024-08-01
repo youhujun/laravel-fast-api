@@ -5,7 +5,7 @@
  * @Author: youhujun 2900976495@qq.com
  * @Date: 2024-06-27 10:40:52
  * @LastEditors: youhujun 2900976495@qq.com
- * @LastEditTime: 2024-07-10 09:52:51
+ * @LastEditTime: 2024-08-01 12:27:53
  * @FilePath: \app\Service\Facade\Phone\Login\PhoneLoginFacadeService.php
  */
 
@@ -144,6 +144,51 @@ class PhoneLoginFacadeService
         }
 
         return $result;
+   }
+
+   /**
+	* 重置手机密码
+    */
+   public function restPasswordByPhone($validated = [])
+   {
+		$result = code(\config('phone_code.RestPasswordByPhoneError'));
+
+		if(!isset($validated['phone']) || !isset($validated['code']) || !isset($validated['password']))
+		{
+			throw new CommonException('ParamsIsNullError');
+		}
+
+		//先获取验证码并进行比对
+		$code = SmsFacade::getVerifyCode($validated['phone']);
+
+		if($code != $validated['code'])
+		{
+			throw new CommonException('PhoneCodeError');
+		}
+
+		$user = User::where('phone',$validated['phone'])->first();
+
+		if(!$user)
+		{
+			throw new CommonException('RestPasswordPoneIsNullError');
+		}
+
+		$password = $validated['password'];
+
+		$user->password = Hash::make($password);
+
+		$userResult = $user->save();
+
+		if(!$userResult)
+		{
+			throw new CommonException('RestPasswordByPhoneError');
+		}
+
+		CommonEvent::dispatch($user,$validated,'RestPasswordByPhone');
+
+		$result = ['code'=>0 ,'msg'=>'重置密码成功!'];
+
+		return $result;
    }
 
    /**
@@ -520,6 +565,53 @@ class PhoneLoginFacadeService
 
         return $result;
     }
+
+	/**
+	 * 微信登录后绑定手机
+	 *
+	 * @param  [type] $validated
+	 * @param  [type] $user
+	 */
+	public function bindPhone($validated,$user)
+	{
+		$result = code(config('phone_code.UserBindPhoneError'));
+
+		if(!isset($validated['phone']) || !isset($validated['code']) || !isset($validated['password']))
+		{
+			throw new CommonException('ParamsIsNullError');
+		}
+
+		//先获取验证码并进行比对
+		$code = SmsFacade::getVerifyCode($validated['phone']);
+
+		if($code != $validated['code'])
+		{
+			throw new CommonException('PhoneCodeError');
+		}
+
+		$phone = $validated['phone'];
+
+		$password =  $validated['password'];
+
+		//绑定手机和密码
+
+		$user->phone = $phone;
+
+		$user->password = Hash::make($password);
+
+		$userResult = $user->save();
+
+		if(!$userResult)
+		{
+			throw new CommonException('UserBindPhoneError');
+		}
+
+		CommonEvent::dispatch($user,$validated,'UserBindPhone');
+
+		$result = ['code'=>0 ,'msg'=>'用户绑定手机号成功!','phone'=> $phone];
+
+		return $result;
+	}
 
     /**
     * 清楚用户相关缓存

@@ -5,7 +5,7 @@
  * @Author: youhujun 2900976495@qq.com
  * @Date: 2023-08-16 13:35:46
  * @LastEditors: youhujun 2900976495@qq.com
- * @LastEditTime: 2024-07-10 09:23:04
+ * @LastEditTime: 2024-08-01 12:14:00
  * @FilePath: \routes\api\phone\login.php
  */
 
@@ -39,6 +39,12 @@ Route::prefix(config('custom.version'))->namespace($namespace)->middleware('phon
                 //通过手机验证码登录
                 Route::post('loginByPhone','loginByPhone')->withoutMiddleware('phone.login');
 
+				//发送验证码 忘记密码
+                Route::any('sendPasswordCode','sendPasswordCode')->withoutMiddleware('phone.login');
+
+				//重置手机密码
+				Route::post('restPasswordByPhone','restPasswordByPhone')->withoutMiddleware('phone.login');
+
                 //微信公众号登录-1获取授权链接
                 Route::any('wechatOfficialGetCodeByLogin','wechatOfficialGetCodeByLogin')->withoutMiddleware('phone.login');
                 //微信公众号登录-2授权页授权
@@ -60,6 +66,11 @@ Route::prefix(config('custom.version'))->namespace($namespace)->middleware('phon
 
                 //检测是否登录
                 Route::any('checkIsLogin','checkIsLogin');
+
+				//发送绑定验证码
+                Route::any('sendBindCode','sendBindCode')->withoutMiddleware('phone.login');
+				//绑定手机号
+				Route::post('bindPhone','bindPhone');
 
                 //退出
                 Route::any('logout','logout');
